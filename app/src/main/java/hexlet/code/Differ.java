@@ -31,7 +31,7 @@ public class Differ {
         var addedKeys = new ArrayList<>(CollectionUtils.subtract(keys2, keys1));
 
         //System.out.println(unionKeys);
-        var result = unionKeys.stream()
+        var tree = unionKeys.stream()
                 .map(key -> {
                     if (deletedKeys.contains(key)) {
                         return new Node(key, map1.get(key), DELETED);
@@ -45,6 +45,20 @@ public class Differ {
                         }
                     }
                 }).toList();
+        //System.out.println(tree);
+        String intend = " ";
+        var lines = tree.stream()
+                .map(node  -> {
+                    String line = switch(node.differ) {
+                       case DELETED -> String.format("- %s: %s", node.key, node.value);
+                       case ADDED -> String.format("+ %s: %s", node.key, node.value);
+                       case CHANGED -> String.format("- %s: %s\n%s+ %s: %s", node.key, node.value, intend, node.key, node.newValue);
+                       case UNCHANGED -> String.format("  %s: %s", node.key, node.value);
+                       default -> "Invalid";
+                   };
+                   return intend + line;
+                }).toList();
+        String result = "{\n" + String.join("\n", lines) + "\n}";
         System.out.println(result);
         return "";
     }
