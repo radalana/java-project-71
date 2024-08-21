@@ -17,8 +17,7 @@ public class Differ {
         Path path = Paths.get(filepath);
         BufferedReader reader = Files.newBufferedReader(path);
         ObjectMapper objectMapper = new ObjectMapper();
-        Map<String, Object> map = objectMapper.readValue(reader, new TypeReference<Map<String, Object>>(){});
-        return map;
+        return objectMapper.readValue(reader, new TypeReference<>(){});
     }
 
     public static String generate(String filepath1, String filepath2) throws Exception{
@@ -26,7 +25,7 @@ public class Differ {
         var map2 = getDataFromPath(filepath2);
         var keys1 = map1.keySet();
         var keys2 = map2.keySet();
-        List<String> unionKeys = new ArrayList<String>(CollectionUtils.union(keys1, keys2));
+        List<String> unionKeys = new ArrayList<>(CollectionUtils.union(keys1, keys2));
         Collections.sort(unionKeys);
         var deletedKeys = new ArrayList<>(CollectionUtils.subtract(keys1, keys2));
         var addedKeys = new ArrayList<>(CollectionUtils.subtract(keys2, keys1));
