@@ -1,6 +1,7 @@
 plugins {
     id("java")
     application
+    checkstyle
 }
 
 group = "hexlet.code"
@@ -24,4 +25,8 @@ tasks.test {
 
 application {
     mainClass.set("hexlet.code.App")
+}
+
+checkstyle {
+    configFile = file("config/checkstyle.xml")
 }
