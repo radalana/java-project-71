@@ -20,7 +20,12 @@ class DifferTest {
                 "  + verbose: true\n" +
                 "}";
 
-        String actual = Differ.generate(path1, path2);
-        assertEquals(expected, actual);
+        try {
+            String actual = Differ.generate(path1, path2);
+            assertEquals(expected, actual);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Test failed due to an exception: " + e.getMessage());
+        };
     }
 }
