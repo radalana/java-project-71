@@ -1,5 +1,5 @@
 run-dist:
-	./build/install/app/bin/app files/file1.json files/file2.json
+	./build/install/app/bin/app
 build:
 	./gradlew build
 .PHONY: build
