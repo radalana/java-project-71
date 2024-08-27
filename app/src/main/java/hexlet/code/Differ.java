@@ -6,21 +6,28 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.*;
-import static hexlet.code.Node.Differ.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+import java.util.ArrayList;
+import static  hexlet.code.Node.Differ.DELETED;
+import static  hexlet.code.Node.Differ.ADDED;
+import static  hexlet.code.Node.Differ.CHANGED;
+import static  hexlet.code.Node.Differ.UNCHANGED;
+
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class Differ {
-    public static Map<String, Object> getDataFromPath(String filepath) throws Exception{
+    public static Map<String, Object> getDataFromPath(String filepath) throws Exception {
         Path path = Paths.get(filepath);
         BufferedReader reader = Files.newBufferedReader(path);
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(reader, new TypeReference<>(){});
+        return objectMapper.readValue(reader, new TypeReference<>() { });
     }
 
-    public static String generate(String filepath1, String filepath2) throws Exception{
+    public static String generate(String filepath1, String filepath2) throws Exception {
         var map1 = getDataFromPath(filepath1);
         var map2 = getDataFromPath(filepath2);
         var keys1 = map1.keySet();
@@ -35,12 +42,12 @@ public class Differ {
                 .map(key -> {
                     if (deletedKeys.contains(key)) {
                         return new Node(key, map1.get(key), DELETED);
-                    }else if (addedKeys.contains(key)) {
+                    } else if (addedKeys.contains(key)) {
                         return new Node(key, map2.get(key), ADDED);
-                    }else{
+                    } else {
                         if (map1.get(key).equals(map2.get(key))) {
                             return new Node(key, map1.get(key), UNCHANGED);
-                        }else {
+                        } else {
                             return new Node(key, map1.get(key), map2.get(key), CHANGED);
                         }
                     }
@@ -49,14 +56,15 @@ public class Differ {
         String intend = " ";
         var lines = tree.stream()
                 .map(node  -> {
-                    String line = switch(node.differ) {
-                       case DELETED -> intend + String.format("- %s: %s", node.key, node.value);
-                       case ADDED -> intend +String.format("+ %s: %s", node.key, node.value);
-                       case CHANGED -> intend + String.format("- %s: %s\n%s+ %s: %s", node.key, node.value, intend + intend, node.key, node.newValue);
-                       case UNCHANGED -> intend + String.format("  %s: %s", node.key, node.value);
-                       default -> "Invalid";
-                   };
-                   return intend + line;
+                    String line = switch (node.differ) {
+                        case DELETED -> intend + String.format("- %s: %s", node.key, node.value);
+                        case ADDED -> intend + String.format("+ %s: %s", node.key, node.value);
+                        case CHANGED -> intend + String.format("- %s: %s\n%s+ %s: %s", node.key, node.value,
+                                intend + intend, node.key, node.newValue);
+                        case UNCHANGED -> intend + String.format("  %s: %s", node.key, node.value);
+                        default -> "Invalid";
+                    };
+                    return intend + line;
                 }).toList();
         String result = "{\n" + String.join("\n", lines) + "\n}";
         System.out.println(result);
