@@ -10,8 +10,8 @@ class DifferTest {
     void generate() throws Exception {
         //путь файла = дать сразу
         //ожидаемы результат в файле сравнить содержимое файлов
-        String path1 = "app/files/file1.json";
-        String path2 = "files/file2.json";
+        String path1 = getClass().getClassLoader().getResource("files/file1.json").getPath();
+        String path2 = getClass().getClassLoader().getResource("files/file2.json").getPath();
         String expected = "{\n"
                 + "  - follow: false\n"
                 + "    host: hexlet.io\n"
