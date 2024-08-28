@@ -37,4 +37,33 @@ class DifferTest {
             fail("Test failed due to an exception: " + e.getMessage());
         }
     }
+    @Test
+    void generateYML() throws Exception {
+        try {
+            URL resource1 = getClass().getClassLoader().getResource("file1.yml");
+            URL resource2 = getClass().getClassLoader().getResource("file2.yml");
+
+            if (resource1 == null || resource2 == null) {
+                fail("Test failed because the resource files could not be found.");
+            }
+
+            String path1 = resource1.getPath();
+            String path2 = resource2.getPath();
+
+            String expected = "{\n"
+                    + "  - follow: false\n"
+                    + "    host: hexlet.io\n"
+                    + "  - proxy: 123.234.53.22\n"
+                    + "  - timeout: 50\n"
+                    + "  + timeout: 20\n"
+                    + "  + verbose: true\n"
+                    + "}";
+
+            String actual = Differ.generate(path1, path2);
+            assertEquals(expected, actual);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Test failed due to an exception: " + e.getMessage());
+        }
+    }
 }
