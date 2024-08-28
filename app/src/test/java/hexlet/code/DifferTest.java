@@ -11,8 +11,8 @@ class DifferTest {
     @Test
     void generate() throws Exception {
         try {
-            URL resource1 = getClass().getClassLoader().getResource("files/file1.json");
-            URL resource2 = getClass().getClassLoader().getResource("files/file2.json");
+            URL resource1 = getClass().getClassLoader().getResource("file1.json");
+            URL resource2 = getClass().getClassLoader().getResource("file2.json");
 
             if (resource1 == null || resource2 == null) {
                 fail("Test failed because the resource files could not be found.");
