@@ -17,7 +17,7 @@ jobs:
           gradle-version: 8.5
           cache-disabled: true
       - name: Build project
-        run: make build
+        run: ./gradlew build
       - name: Debugging - Show Gradle logs
         run: cat ./app/build/reports/jacoco/test/jacocoTestReport.xml ||  echo "No report found"
       - name: Run tests
