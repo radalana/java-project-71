@@ -1,13 +1,10 @@
 package hexlet.code;
 
-import java.io.BufferedReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.Files;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.util.List;
-import java.util.Map;
+
 import java.util.Collections;
 import java.util.ArrayList;
 import static  hexlet.code.Node.Differ.DELETED;
@@ -15,21 +12,18 @@ import static  hexlet.code.Node.Differ.ADDED;
 import static  hexlet.code.Node.Differ.CHANGED;
 import static  hexlet.code.Node.Differ.UNCHANGED;
 
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class Differ {
-    public static Map<String, Object> getDataFromPath(String filepath) throws Exception {
-        Path path = Paths.get(filepath);
-        BufferedReader reader = Files.newBufferedReader(path);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(reader, new TypeReference<>() { });
-    }
-
+    public static boolean isSameFormat(String file1, String file2) {
+        String ext1 = FilenameUtils.getExtension(file1);
+        String ext2 = FilenameUtils.getExtension(file2);
+        return ext1.equalsIgnoreCase(ext2);
+    };
     public static String generate(String filepath1, String filepath2) throws Exception {
-        var map1 = getDataFromPath(filepath1);
-        var map2 = getDataFromPath(filepath2);
+        if (!isSameFormat(filepath1, filepath2)) {
+            throw new Exception("Files must be of the same type");
+        }
+        var map1 = Parser.parse(filepath1);
+        var map2 = Parser.parse(filepath2);
         var keys1 = map1.keySet();
         var keys2 = map2.keySet();
         List<String> unionKeys = new ArrayList<>(CollectionUtils.union(keys1, keys2));
