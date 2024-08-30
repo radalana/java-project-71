@@ -40,3 +40,6 @@ application {
 checkstyle {
     configFile = file("config/checkstyle.xml")
 }
+tasks.named<JavaExec>("run") {
+    args = listOf("src/test/resources/file1.json", "src/test/resources/file2.json")
+}
