@@ -25,18 +25,9 @@ class DifferTest {
             String path1 = resource1.getPath();
             String path2 = resource2.getPath();
 
-            String expected1 = "{\n"
-                    + "  - follow: false\n"
-                    + "    host: hexlet.io\n"
-                    + "  - proxy: 123.234.53.22\n"
-                    + "  - timeout: 50\n"
-                    + "  + timeout: 20\n"
-                    + "  + verbose: true\n"
-                    + "}";
             Path expected = Paths.get(getClass().getClassLoader().getResource("expected1.txt").toURI());
             String actual = Differ.generate(path1, path2);
             assertThat(expected).hasContent(actual);
-            //assertEquals(expected, actual);
         } catch (Exception e) {
             e.printStackTrace();
             fail("Test failed due to an exception: " + e.getMessage());
@@ -54,18 +45,10 @@ class DifferTest {
 
             String path1 = resource1.getPath();
             String path2 = resource2.getPath();
-
-            String expected = "{\n"
-                    + "  - follow: false\n"
-                    + "    host: hexlet.io\n"
-                    + "  - proxy: 123.234.53.22\n"
-                    + "  - timeout: 50\n"
-                    + "  + timeout: 20\n"
-                    + "  + verbose: true\n"
-                    + "}";
-
             String actual = Differ.generate(path1, path2);
-            assertEquals(expected, actual);
+            Path expected = Paths.get(getClass().getClassLoader().getResource("expected1.txt").toURI());
+            assertThat(expected).hasContent(actual);
+
         } catch (Exception e) {
             e.printStackTrace();
             fail("Test failed due to an exception: " + e.getMessage());
