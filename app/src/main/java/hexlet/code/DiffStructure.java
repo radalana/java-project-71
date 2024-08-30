@@ -2,10 +2,7 @@ package hexlet.code;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static  hexlet.code.Node.Differ.DELETED;
 import static  hexlet.code.Node.Differ.ADDED;
@@ -13,6 +10,34 @@ import static  hexlet.code.Node.Differ.CHANGED;
 import static  hexlet.code.Node.Differ.UNCHANGED;
 
 public class DiffStructure {
+    /*
+    private static String getType(String typeName) {
+    }
+    */
+
+    /*
+    numbers
+    strings
+    boolean
+     */
+//    public static boolean isSimpleJsonValue(Object value) {
+//        if (value == null) {
+//            return true;
+//        }
+//        /*
+//        String typeName = value.getClass().getTypeName();
+//        String type = getType(typeName);
+//        */
+//        if (value instanceof Number) {
+//            return true;
+//        } else if (value instanceof String) {
+//            return true;
+//        } else if (value instanceof Boolean) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    };
     public static List<Node> build(Map<String, Object> data1, Map<String, Object> data2) {
         var keys1 = data1.keySet();
         var keys2 = data2.keySet();
@@ -28,9 +53,15 @@ public class DiffStructure {
                     } else if (addedKeys.contains(key)) {
                         return new Node(key, data2.get(key), ADDED);
                     } else {
-                        if (data1.get(key).equals(data2.get(key))) {
+                        //
+                        if (Objects.equals(data1.get(key), data2.get(key))) { //values same
+                            //если оба примитивные
+
+                            //оба ссылочные
+
+                            //иначе
                             return new Node(key, data1.get(key), UNCHANGED);
-                        } else {
+                        } else { //values diffrent
                             return new Node(key, data1.get(key), data2.get(key), CHANGED);
                         }
                     }
