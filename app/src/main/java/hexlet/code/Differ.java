@@ -1,5 +1,6 @@
 package hexlet.code;
 
+import hexlet.code.formatters.Stylish;
 import org.apache.commons.io.FilenameUtils;
 
 public class Differ {
@@ -16,20 +17,7 @@ public class Differ {
         var data1 = Parser.parse(filepath1);
         var data2 = Parser.parse(filepath2);
         var tree = DiffStructure.build(data1, data2);
-        String intend = " ";
-        var lines = tree.stream()
-                .map(node  -> {
-                    String line = switch (node.differ) {
-                        case DELETED -> intend + String.format("- %s: %s", node.key, node.value);
-                        case ADDED -> intend + String.format("+ %s: %s", node.key, node.value);
-                        case CHANGED -> intend + String.format("- %s: %s\n%s+ %s: %s", node.key, node.value,
-                                intend + intend, node.key, node.newValue);
-                        case UNCHANGED -> intend + String.format("  %s: %s", node.key, node.value);
-                        default -> "Invalid";
-                    };
-                    return intend + line;
-                }).toList();
-        String result = "{\n" + String.join("\n", lines) + "\n}";
+        var result = Stylish.style(tree);
         System.out.println(result);
         return result;
     }
