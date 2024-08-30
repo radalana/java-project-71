@@ -8,13 +8,12 @@ public class Node {
         DELETED,
         UNCHANGED,
         CHANGED,
-        NESTED
     }
     public String key;
     public Object value;
     public Object newValue;
     public Differ differ; //возможно нужен enum
-    public List<Object> children;
+
     Node(String key, Object value, Differ differ) {
         this.key = key;
         this.value = value;
